@@ -1,0 +1,59 @@
+- _define:
+    vars:
+    prompt:
+
+- clear:
+    run: rm bin/main
+
+- compile:
+    run: g++ src/main.cpp src/StudentsTrie.cpp -I include -o bin/main
+    points: 1
+    blocker: true
+
+- check_case1:
+    run: ./bin/main BLG223E_students_subset.txt 504202502
+    points: 0.5
+    script:
+        - expect: "is 504202502 in the trie: true" # timeout: 8
+        - expect: _EOF_
+    exit: 0 
+ 
+- check_case2:
+    run: ./bin/main BLG223E_students_subset.txt 504222502
+    points: 0.5
+    script:
+        - expect: "is 504222502 in the trie: false" # timeout: 8
+        - expect: _EOF_
+    exit: 0 
+ 
+- check_case3:
+    run: ./bin/main BLG223E_students_subset.txt 070190148
+    points: 0.5
+    script:
+        - expect: "is 070190148 in the trie: true" # timeout: 8
+        - expect: _EOF_
+    exit: 0 
+
+- check_case4:
+    run: ./bin/main BLG223E_students_subset.txt 170190148
+    points: 0.5
+    script:
+        - expect: "is 170190148 in the trie: false" # timeout: 8
+        - expect: _EOF_
+    exit: 0 
+
+- check_case5:
+    run: ./bin/main BLG223E_students_subset.txt 150200913
+    points: 0.5
+    script:
+        - expect: "is 150200913 in the trie: true" # timeout: 8
+        - expect: _EOF_
+    exit: 0 
+
+- check_case6:
+    run: ./bin/main BLG223E_students_subset.txt 150200914
+    points: 0.5
+    script:
+        - expect: "is 150200914 in the trie: false" # timeout: 8
+        - expect: _EOF_
+    exit: 0 

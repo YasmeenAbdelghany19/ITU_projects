@@ -1,0 +1,22 @@
+- init:
+    run: rm -f recitation_6_1
+    blocker: true
+
+- build:
+    run: g++ -Wall -Werror main.cpp -o recitation_6_1 -lm # timeout: 10
+    exit: 0
+    points: 1
+    blocker: true
+
+- case1:
+    run: ./recitation_6_1 orders.txt
+    script: 
+        - expect: 'Choose an operation(\r\n)*L: List 5 products with the highest revenue for total(\r\n)*E: Exit(\r\n)*Enter a choice {L, E}: ' # timeout: 10
+        - send: 'L'
+        - expect: '5 products with the highest revenue for total are:(\r\n)meat 252.00(\r\n)egg 232.40(\r\n)cornflakes 210.00(\r\n)milk 208.80(\r\n)oil 208.50(\r\n)' # timeout: 10
+        - send: 'E'
+        - expect: _EOF_
+    exit: 0
+    points: 1 
+
+
