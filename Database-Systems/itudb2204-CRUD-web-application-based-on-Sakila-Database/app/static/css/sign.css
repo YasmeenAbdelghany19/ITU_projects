@@ -1,0 +1,94 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+.container1{
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(rgba(0,0,50,0.8), rgba(0,0,50,0.8)), url(dvdstore.png);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.form-box1{
+    width: 90%;
+    max-width: 450px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ffff;
+    padding: 50px 60px 70px;
+    text-align: center;
+}
+
+.form-box1 h1{
+    font-size: 30px;
+    margin-bottom: 60px;
+    color: slategray;
+    position: relative;
+}
+
+.form-box1 h1::after{
+    content: '';
+    width: 30px;
+    height: 4px;
+    border-radius: 3px;
+    background: slategray;
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%)
+}
+
+.input-field1{
+    background: #eaeaea;
+    margin: 15px 0;
+    border-radius: 3px;
+    display:flex;
+    align-items: center;
+}
+
+
+.form-control2{
+    width: 100%;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    padding: 18px 15px;
+} 
+
+.input-field1 i{
+    margin-left: 15px;
+    color: #999;
+}
+
+.btn-field1{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-field1 button{
+    flex-basis: 100%;
+    background: slategray;
+    color: #fff;
+    height: 40px;
+    border-radius: 20px;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    transition: background 1s;
+}
+
+.input-group1{
+    height: 200px;
+}
+
+.link{
+    top: 50%;
+}

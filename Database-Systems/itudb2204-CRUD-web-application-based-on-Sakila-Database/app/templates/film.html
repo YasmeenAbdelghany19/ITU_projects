@@ -1,0 +1,258 @@
+{% extends "layout.html" %}
+
+{% block title %}Film{% endblock %}
+
+{%block main%}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1> Film Table</h1>
+            <hr>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col text-right">
+            <button type="button" class="btn btn-dark btn-lg" data-toggle="modal" data-target="#mymodal">Add
+                Film</button>
+            <hr>
+        </div>
+    </div>
+</div>
+
+<table class="table table-responsive-sm table-sm table-hover" id="film_table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Title</th>
+            <th scope="col">Category</th>
+            <th scope="col">Description</th>
+            <th scope="col">Release Year</th>
+            <th scope="col">language</th>
+            <th scope="col">Rental Duration</th>
+            <th scope="col">Rental Rate</th>
+            <th scope="col">Length</th>
+            <th scope="col">Replacement Cost</th>
+            <th scope="col">Rating</th>
+            <th scope="col">Operation</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for records in film_data %}
+        <tr>
+            <th scope="row">{{records.film_id}}</th>
+            <td>{{records.title}}</td>
+            <td>{{records.name}}</td>
+            <td>{{records.description}}</td>
+            <td>{{records.release_year}}</td>
+            <td>{{records.language}}</td>
+            <td>{{records.rental_duration}}</td>
+            <td>{{records.rental_rate}}</td>
+            <td>{{records.length}}</td>
+            <td>{{records.replacement_cost}}</td>
+            <td>{{records.rating}}</td>
+            <td><a href="/update/{{records.film_id}}" class="btn btn-warning btn-xs" data-toggle="modal"
+                    data-target="#modaledit{{records.film_id}}"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>
+                <a href="/delete/{{records.film_id}}" class="btn btn-danger btn-xs"
+                    onclick="return confirm('Are you sure you want to delete?')"><i class="fa-solid fa-trash"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+</div>
+
+<!-- modal for edit -->
+<!--when clicking update the modal should be filled with the current values-->
+{% for records in film_data %}
+<div id="modaledit{{records.film_id}}" class="modal fade" role="dialog" aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="addFilm">Update Film</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <form action="{{ url_for('update') }}" method="POST">
+
+                    <div class="form-group">
+                        <label for="title" class="col-form-label">Title</label>
+                        <input type="hidden" name="id" value="{{records.film_id}}">
+                        <input type="text" class="form-control1" name="title" value="{{records.title}}"
+                            placeholder="Type title" required="1">
+
+                        <label for="Description-text" class="col-form-label">Description</label><br>
+                        <textarea id="description" name="description" rows="3" cols="50" class="textarea"
+                            placeholder=" Type a short description or plot summary of the film"
+                            required="1">{{records.description}}</textarea>
+                        <br><br>
+
+                        <label>Release Year</label>
+                        <input type="text" class="datepicker" name="year_datepicker" value="{{records.release_year}}"
+                            placeholder="select year" required="1" />
+
+                        <label>Length</label>
+                        <input type="number" class="form-control2" id="replyNumber" min="0" step="1"
+                            data-bind="value:replyNumber" name="length" required="1" value="{{records.length}}" />
+
+                        <label>Rental Duration</label>
+                        <input type="number" class="form-control2" id="replyNumber" min="0" step="1"
+                            data-bind="value:replyNumber" required="1" name="rent_dur" value="{{records.rental_duration}}" /><br>
+
+                        <label>Rental Rate </label>
+                        <input type="number" min="0" step="0.01" max="99.99" class="form-control2" required="1"
+                            name="rent_rate" value="{{records.rental_rate}}" />
+
+                        <label>Replacement Cost</label>
+                        <input type="number" min="0" step="0.01" max="999.99" class="form-control2" required="1"
+                            name="cost" value="{{records.replacement_cost}}" />
+                        <br />
+
+                        <label for="category">Category</label>
+                        <select name="cat_menu" id="cat_menu" value="{{records.name}}" required="1"
+                            onchange="if (this.value=='other'){this.form['other'].style.visibility='visible'}else {this.form['other'].style.visibility='hidden'};">
+                            {% for cat in cat_data %}
+                            <option name="cat_menu" value="{{cat}}">{{cat}}</option>
+                            {% endfor %}
+                            <option value="other">--Other--</option>
+                        </select>
+                        <input type="textbox" class="other_text" name="other" style="visibility:hidden;"/>
+
+                        <label for="languages">Language</label>
+                        <select name="lang_menu" id="lang_menu" value="{{records.language}}" required="1"
+                            onchange="if (this.value=='Other'){this.form['Other'].style.visibility='visible'}else {this.form['Other'].style.visibility='hidden'};">
+                            {% for lang in lang_data %}
+                            <option name="lang_menu" value="{{lang}}">{{lang}}</option>
+                            {% endfor %}
+                            <option value="Other">--Other--</option>
+                        </select>
+                        <input type="textbox" class="other_text" name="Other" style="visibility:hidden;" /><br />
+                        <label>Rating: </label>
+                        <input type="radio" name="ratings" value="G" id="rating1" aria-selected="true" required="1">
+                        <label for="rating1">G</label>
+                        <input type="radio" name="ratings" value="PG" id="rating2">
+                        <label for="rating2">PG</label>
+                        <input type="radio" name="ratings" value="PG-13" id="rating3">
+                        <label for="rating3">PG-13</label>
+                        <input type="radio" name="ratings" value="R" id="rating4">
+                        <label for="rating4">R</label>
+                        <input type="radio" name="ratings" value="NC-17" id="rating5">
+                        <label for="rating5">NC-17</label>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Edits</button>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<!-- Large modal -->
+<div id="mymodal" class="modal fade" role="dialog" aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="addFilm">Add a new film</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <form action="{{ url_for('get_film') }}" method="POST">
+
+                    <div class="form-group">
+                        <label for="title" class="col-form-label">Title</label>
+                        <input type="text" class="form-control1" name="title" placeholder="Type title" required="1">
+
+                        <label for="Description-text" class="col-form-label">Description</label><br>
+                        <textarea id="description" name="description" rows="3" cols="50" required="1"
+                            placeholder=" Type a short description or plot summary of the film"
+                            class="textarea"></textarea>
+                        <br><br>
+
+                        <label>Release Year</label>
+                        <input type="text" class="datepicker" placeholder="select year" name="year_datepicker"
+                            required="1" />
+
+                        <label>Length</label>
+                        <input type="number" class="form-control2" id="replyNumber" min="0" step="1"
+                            data-bind="value:replyNumber" name="length" required="1" />
+
+                        <label>Rental Duration</label>
+                        <input type="number" class="form-control2" id="replyNumber" min="0" step="1"
+                            data-bind="value:replyNumber" required="1" name="rent_dur" /><br>
+
+                        <label>Rental Rate</label>
+                        <input type="number" min="0" step="0.01" max="99.99" class="form-control2" required="1"
+                            name="rent_rate" />
+
+                        <label>Replacement Cost</label>
+                        <input type="number" min="0" step="0.01" max="999.99" class="form-control2" required="1"
+                            name="cost" /> <br />
+
+                        <label for="category">Category</label>
+                        <select name="cat_menu" id="cat_menu" required="1"
+                            onchange="if (this.value=='other'){this.form['other'].style.visibility='visible'}else {this.form['other'].style.visibility='hidden'};">
+                            {% for cat in cat_data %}
+                            <option name="cat_menu" value="{{cat}}">{{cat}}</option>
+                            {% endfor %}
+                            <option value="other">--Other--</option>
+                        </select>
+                        <input type="textbox" class="other_text" name="other" style="visibility:hidden;" />
+
+                        <label for="languages">Language</label>
+                        <select name="lang_menu" id="lang_menu" required="1"
+                            onchange="if (this.value=='Other'){this.form['Other'].style.visibility='visible'}else {this.form['Other'].style.visibility='hidden'};">
+                            {% for lang in lang_data %}
+                            <option name="lang_menu" value="{{lang}}">{{lang}}</option>
+                            {% endfor %}
+                            <option value="Other">--Other--</option>
+                        </select>
+                        <input type="textbox" class="other_text" name="Other" style="visibility:hidden;" /><br />
+
+                        <label>Rating: </label>
+                        <input type="radio" name="ratings" value="G" id="rating1" aria-selected="true" required="1">
+                        <label for="rating1">G</label>
+                        <input type="radio" name="ratings" value="PG" id="rating2">
+                        <label for="rating2">PG</label>
+                        <input type="radio" name="ratings" value="PG-13" id="rating3">
+                        <label for="rating3">PG-13</label>
+                        <input type="radio" name="ratings" value="R" id="rating4">
+                        <label for="rating4">R</label>
+                        <input type="radio" name="ratings" value="NC-17" id="rating5">
+                        <label for="rating5">NC-17</label>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button id="submit" type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

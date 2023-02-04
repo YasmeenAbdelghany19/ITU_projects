@@ -1,0 +1,156 @@
+{% extends 'layout.html' %}
+
+{% block head %} 
+<link rel="stylesheet" href="{{ url_for('static',filename='css/staff.css') }}">
+
+{% endblock %}
+
+{% block main %}
+<button type="button" id="openForm" class="btn btn-primary" onclick="openForm()">
+ADD NEW STAFF
+</button>
+
+<div id="modal" class="modal">
+  <div id="add_to_staff" class="add_to_staff">
+    <form action="{{ url_for('add_new_staff') }}" method="POST">
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" name = "fname" class="form-control" id="firstName" placeholder="Your First Name" required="1">
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" name="lname" class="form-control" id="lastName" placeholder="Your Last Name" required="1">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Email address</label>
+        <input name="email" type="email" class="form-control" id="email" placeholder="Enter email" required="1">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Username</label>
+          <input name="username" type="text" class="form-control" id="username" placeholder="Username" required="1">
+          </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required="1">
+        </div>
+        <div class="form-group">
+          <label for="email">Country:</label>
+          <select class="form-control country" id="country" name="country" required="1">
+              {% for row in country %}
+              <option value="{{row.country_id}}">{{row.country}}</option>
+              {% endfor %}
+          </select>
+      </div>
+        <div class="form-group">
+          <label for="city">City:</label>
+          <select class="form-select city" id="city" name="city" required="1"></select>
+        </div>
+        <div class="form-group">
+          <label for="st_Address">Store Address:</label>
+          <select class="form-select st_Address" id="st_Address" name="st_Address" required="1"></select>
+        </div>
+        <div class="form-group">
+          <label for="h_Address">Home Addres: </label>
+          <select class="form-select h_Address" id="h_Address" name="h_Address" required="1">
+            
+          </select>
+          
+        </div>
+        <div class="form-group">
+          <input type="text" name="adding_other_Home_Address" class="other_Home_Address" id="add_New_Home_Adrres">
+        </div>
+
+        <button id="add" type="submit" class="btn btn-primary">Submit</button>
+        
+    </form>      
+  </div>
+  
+</div>
+<div id="updateModal" class="modal">
+  <div id="updateStaff" class="add_to_staff">
+    <form action="/update_staff/" method="POST">
+      <div class="form-group">
+        <label for="id">ID:</label>
+        <input type="text" name="id" id="id" class="form-control" readonly>
+      </div>
+      <div class="form-group">
+        <label for="f_name">First Name:</label>
+        <input type="text" name="f_name" id="f_name" class="form-control" required="1">
+      </div>
+      <div class="form-group">
+        <label for="f_name">Last Name:</label>
+        <input type="text" name="l_name" id="l_name" class="form-control" required="1">
+      </div>
+      <div class="form-group">
+        <label for="f_name">Email:</label>
+        <input type="text" name="em" id="em" class="form-control" required="1">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Username</label>
+        <input name="usn" type="text" class="form-control" id="usn" placeholder="Username" required="1">
+        </div>
+      <div class="form-group">
+        <label for="email">Country:</label>
+        <select class="form-control country" id="u_country" name="u_country" required="1">
+            {% for row in country %}
+            <option value="{{row.country_id}}">{{row.country}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+      <label for="city">City:</label>
+      <select class="form-select city" id="u_city" name="u_city" required="1"></select>
+    </div>
+    <div class="form-group">
+      <label for="st_Address">Store Address:</label>
+      <select class="form-select st_Address" id="storeAddress" name="storeAddress" required="1"></select>
+    </div>
+    <div class="form-group">
+      <label for="h_Address">Home Addres: </label>
+      <select class="form-select h_Address" id="homeAddress" name="homeAddress" required="1">
+      </select>
+      </div>
+      <button id="upd" type="submit" class="btn btn-primary">Update</button>
+    </form>
+  </div>
+
+</div>
+<table class="table table-responsive-sm table-sm table-hover" id="staff_table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Username</th>
+        <th scope="col">Country</th>
+        <th scope="col">City</th>
+        <th scope="col">Store Address</th>
+        <th scope="col">Home Address</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% for tuple in tuples %}
+        <th scope="row">{{tuple.staff_id}}</th>
+        <td>{{tuple.first_name}}</td>
+        <td>{{tuple.last_name}}</td>
+        <td>{{tuple.email}}</td>
+        <td>{{tuple.username}}</td>
+        <td>{{tuple.country}}</td>
+        <td>{{tuple.city}}</td>
+        <td>{{tuple.Store_Address}}</td>
+        <td>{{tuple.Home_Address}}</td>
+        <td class="operation">
+            <a class="delete" href="/delete_from_staff/{{tuple.staff_id}}"><i class="fa-solid fa-trash"></i></a>
+            <a id="{{tuple.staff_id}}" class="updateRow"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>
+        </td>
+
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<script src="{{ url_for('static',filename='staff/staff.js') }}">
+</script>
+
+{% endblock %}
